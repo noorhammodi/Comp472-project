@@ -27,6 +27,9 @@ This script goes through the directories within the dataset. Then, it builds a .
 # driver.py
 A script to test our CustomDataset class + pytorch's DataLoader() function.
 
+# cnnnew.py
+This is our main code that train our AI and generate the evaluation part (precision recall accuracy F1-measure and confusion matrice)
+
 # How to Install
 To run the main program cnnnew.py, you need the following libraries: pandas, PyTorch, scikit-image, torchvision, matplotlib and seaborn. 
 If you want to test resizeImages.py and buildDatasetCSV.py, you will need these libraries: python image library (Pillow), CSV.
