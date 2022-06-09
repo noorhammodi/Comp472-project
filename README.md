@@ -26,8 +26,8 @@ This script goes through the directories within the dataset. Then, it builds a .
 A script to test our CustomDataset class + pytorch's DataLoader() function.
 
 # How to Install
-To run the main program [insert main file name here], you need the following libraries: pandas, PyTorch, scikit-image, and torchvision. 
+To run the main program cnnnew.py, you need the following libraries: pandas, PyTorch, scikit-image, and torchvision. 
 If you want to test resizeImages.py and buildDatasetCSV.py, you will need these libraries: python image library (Pillow), CSV.
 
 # How to Run
-python [insert main file name here].
+Simply Execute python cnnnew.py
