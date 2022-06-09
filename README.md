@@ -3,7 +3,7 @@
 The goal is to develop an AI that can analyze facial images and detect whether a person is wearing a face mask or not, as well as what type of mask they are wearing.
 
 # Dataset
-This folder contains our picture dataset for testing and training. Inside these folders two folders, the pictures are sorted in the following categories : no_mask, cloth, surgicalm, n95.
+This folder contains our picture dataset for testing and training. Inside these folders two folders, the pictures are sorted in the following categories: no_mask, cloth, surgical, n95.
 
 # Dataset Resized
 This folder contains our pre-processed dataset with a consistent resolution.
@@ -26,8 +26,8 @@ This script goes through the directories within the dataset. Then, it builds a .
 A script to test our CustomDataset class + pytorch's DataLoader() function.
 
 # How to Install
-To run the main program [insert main file name here], you need the following libraries: pandas, pytorch, scikit-image, torchvision. 
-If you want to test resizeImages.py and buildDatasetCSV.py, you will need these libraries: python image library (Pillow), csv.
+To run the main program [insert main file name here], you need the following libraries: pandas, PyTorch, scikit-image, and torchvision. 
+If you want to test resizeImages.py and buildDatasetCSV.py, you will need these libraries: python image library (Pillow), CSV.
 
 # How to Run
 python [insert main file name here].
