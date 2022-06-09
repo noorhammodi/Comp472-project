@@ -36,8 +36,8 @@ transformer = transforms.Compose([
 
 # Path for training and testing directory
 
-train_path = 'dataset/training'
-test_path = 'dataset/testing'
+train_path = 'dataset_resized/training'
+test_path = 'dataset_resized/testing'
 
 train_loader = DataLoader(
     torchvision.datasets.ImageFolder(train_path, transform=transformer),
