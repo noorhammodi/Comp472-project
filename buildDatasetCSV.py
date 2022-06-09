@@ -21,7 +21,7 @@ def buildCSV(type="training"):
     print("writing " + type + " csv")
     with open(type + '.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        #fileList = os.listdir("dataset/testing")
+        #fileList = os.listdir("dataset_resized/testing")
         for index, label in enumerate(labels):
             fileList = os.listdir("dataset_resized/" + type + "/" + label)
             for file in fileList:
