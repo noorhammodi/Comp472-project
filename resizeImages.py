@@ -1,14 +1,6 @@
 from PIL import Image
 import os
 
-
-image = Image.open('Koala.jpg')
-new_image = image.resize((400, 400))
-new_image.save('xd/Koala2.jpg')
-
-print(image.size) # Output: (1920, 1280)
-print(new_image.size) # Output: (400, 400)
-
 datasets = ["training", "testing"]
 labels = ["no_mask", "cloth", "surgical", "n95"]
 
