@@ -2,12 +2,7 @@ from PIL import Image
 import os
 
 
-image = Image.open('Koala.jpg')
-new_image = image.resize((400, 400))
-new_image.save('xd/Koala2.jpg')
 
-print(image.size) # Output: (1920, 1280)
-print(new_image.size) # Output: (400, 400)
 
 datasets = ["training", "testing"]
 labels = ["no_mask", "cloth", "surgical", "n95"]
@@ -64,18 +59,12 @@ for dataset in datasets:
         fileList = os.listdir("dataset/" + dataset + "/" + label)
         for file in fileList:
             filepath = "dataset/" + dataset + "/" + label + "/" + file
-            filepath_resized = "dataset_resized/" + dataset + "/" + label + "/" + file
+            final_filename = file.replace("jfif", "jpg").replace("jpeg", "jpg").replace("png", "jpg")
+            filepath_resized = "dataset_resized/" + dataset + "/" + label + "/" + final_filename
             image = Image.open(filepath)
-            try:
-                new_image = image.resize((avg_width, avg_height))
-                new_image.save(filepath_resized)
-            except:
-                #print(filepath_resized)
-                #if image.mode in ("RGBA", "P"):
-                    #print("########################")
-                new_image = image.resize((avg_width, avg_height)).convert("RGB")
-                new_image.save(filepath_resized)
-
+            #print(filepath_resized)
+            new_image = image.resize((int(avg_width/8), int(avg_height/8))).convert("RGB")
+            new_image.save(filepath_resized)
             #exit()
 
 print("done")
