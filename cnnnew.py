@@ -1,4 +1,4 @@
-#Load libraries
+# Load libraries
 
 import os
 import numpy as np
@@ -11,58 +11,46 @@ from torch.optim import Adam
 from torch.autograd import Variable
 import torchvision
 import pathlib
-from sklearn import datasets
-from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
-from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
+import pandas as pd
 import matplotlib.pyplot as plt
-from torch.utils.data import random_split
-from skorch import NeuralNetClassifier
-import torch.optim as optim
-from sklearn.metrics import plot_confusion_matrix
-import torch.utils.data as td
-from sklearn.datasets import make_classification
-from sklearn.svm import SVC
-from sklearn.metrics import f1_score   
 
-
-
-#checking for device
+# checking for device
 from customDataset import MaskDataset
 
-device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 print(device)
 
-#Transforms
-transformer=transforms.Compose([
-    transforms.Resize((150,150)),
+# Transforms
+transformer = transforms.Compose([
+    transforms.Resize((150, 150)),
     transforms.RandomHorizontalFlip(),
-    transforms.ToTensor(),  #0-255 to 0-1, numpy to tensors
-    transforms.Normalize([0.5,0.5,0.5], # 0-1 to [-1,1] , formula (x-mean)/std
-                        [0.5,0.5,0.5])
+    transforms.ToTensor(),  # 0-255 to 0-1, numpy to tensors
+    transforms.Normalize([0.5, 0.5, 0.5],  # 0-1 to [-1,1] , formula (x-mean)/std
+                         [0.5, 0.5, 0.5])
 ])
 
-#Dataloader
+# Dataloader
 
-#Path for training and testing directory
+# Path for training and testing directory
 
-train_path = 'dataset_resized\\training'
-test_path = 'dataset_resized\\testing'
+train_path = 'dataset/training'
+test_path = 'dataset/testing'
 
-train_loader=torch.utils.data.DataLoader(
-    torchvision.datasets.ImageFolder(train_path,transform=transformer),
+train_loader = DataLoader(
+    torchvision.datasets.ImageFolder(train_path, transform=transformer),
     batch_size=64, shuffle=True
 )
-test_loader=torch.utils.data.DataLoader(
-    torchvision.datasets.ImageFolder(test_path,transform=transformer),
+test_loader = DataLoader(
+    torchvision.datasets.ImageFolder(test_path, transform=transformer),
     batch_size=1, shuffle=True
 )
 
-#categories
-root=pathlib.Path(train_path)
-classes=sorted([j.name.split('/')[-1] for j in root.iterdir()])
+# categories
+root = pathlib.Path(train_path)
+classes = sorted([j.name.split('/')[-1] for j in root.iterdir()])
 
 print(classes)
 
@@ -76,7 +64,7 @@ class ConvNet(nn.Module):
 
         # Output size after convolution filter
         # ((w-f+2P)/s) +1
-
+        #(width -filter +2padding/stride) + 1
         # Input shape= (256,3,150,150)
 
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=12, kernel_size=3, stride=1, padding=1)
@@ -128,27 +116,21 @@ class ConvNet(nn.Module):
 
         return output
 
-model=ConvNet(num_classes=6).to(device)
 
-#Optmizer and loss function
-optimizer=Adam(model.parameters(),lr=0.001,weight_decay=0.0001)
-loss_function=nn.CrossEntropyLoss()
+model = ConvNet(num_classes=6).to(device)
 
-num_epochs=10
+# Optmizer and loss function
+optimizer = Adam(model.parameters(), lr=0.001, weight_decay=0.0001)
+loss_function = nn.CrossEntropyLoss()
 
-#calculating the size of training and testing images
-train_count=len(glob.glob(train_path+'/**/*.jpg'))
-test_count=len(glob.glob(test_path+'/**/*.jpg'))
+num_epochs = 40
 
+# calculating the size of training and testing images
+train_count = len(glob.glob(train_path + '/**/*.jpg'))
+test_count = len(glob.glob(test_path + '/**/*.jpg'))
 
-#y_train=glob.glob(train_path+'/**/*.jpg')
-#y_test=glob.glob(test_path+'/**/*.jpg')
+print(train_count, test_count)
 
-
-
-
-print(train_count,test_count)
-print("h")
 # Model training and saving best model
 
 best_accuracy = 0.0
@@ -179,49 +161,46 @@ for epoch in range(num_epochs):
 
     train_accuracy = train_accuracy / train_count
     train_loss = train_loss / train_count
-
+    print("Epoch ", epoch, ": Train Loss:", train_loss, " Train Accuracy: ", train_accuracy)
     # Evaluation on testing dataset
-    model.eval()
-   
-    
-
-   
-    
-
-    test_accuracy = 0.0
+CM = 0
+model.eval()
+with torch.no_grad():
     for i, (images, labels) in enumerate(test_loader):
-        if torch.cuda.is_available():
-            images = Variable(images.cuda())
-            labels = Variable(labels.cuda())
+        images = images.to(device)
+        labels = labels.to(device)
 
         outputs = model(images)
-        _, prediction = torch.max(outputs.data, 1)
-        test_accuracy += int(torch.sum(prediction == labels.data))
+        preds = torch.argmax(outputs.data, 1)
+        CM += confusion_matrix(labels.cpu(), preds.cpu(), labels=[0, 1, 2, 3])
 
-    test_accuracy = test_accuracy / test_count
-    
-    
-    
-    
+    tn = CM[0][0]
+    tp = CM[1][1]
+    fp = CM[0][1]
+    fn = CM[1][0]
+    accuracy = np.sum(np.diag(CM) / np.sum(CM))
+    recall = tp / (tp + fn)
+    precision = tp / (tp + fp)
 
-    print('Epoch: ' + str(epoch) + ' Train Loss: ' + str(train_loss) + ' Train Accuracy: ' + str(
-      train_accuracy) + ' Test Accuracy: ' + str(test_accuracy))
+    print('\nTestset Accuracy(mean): %f %%' % (100 * accuracy))
+    print()
+    print('Confusion Matirx : ')
+    print(CM)
+    print('- Recall : ', (tp / (tp + fn)) * 100, '%')
+    print('- Precision: ', (tp / (tp + fp)) * 100, '%')
+    print('- F1 : ', ((2 * recall * precision) / (recall + precision)) * 100, "%")
+
+    print()
 
     # Save the best model
-    if test_accuracy > best_accuracy:
+    if accuracy > best_accuracy:
         torch.save(model.state_dict(), 'best_checkpoint.model')
-        best_accuracy = test_accuracy
+        best_accuracy = accuracy
 
+#Show the CM
+df_cm = pd.DataFrame(CM, range(4), range(4))
+# plt.figure(figsize=(10,7))
+sn.set(font_scale=1.4) # for label size
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 80}) # font size
 
-X, y = make_classification(random_state=0)
-X_train, X_test, y_train, y_test = train_test_split(
-        X, y, random_state=10)
-clf = MaskDataset(random_state=10)
-clf.fit(X_train, y_train)
-
-plot_confusion_matrix(clf, X_test, y_test)  
 plt.show()
-
-
-
-
