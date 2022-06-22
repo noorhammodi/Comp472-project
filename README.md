@@ -1,4 +1,6 @@
 # Comp472-project
+# Report
+The report can also be find on our shared google docs : https://docs.google.com/document/d/16JTKzBfRxTZjLQOXlL781Xp3SyU8lGIDOO8jrC1NxiA/edit#
 # AI Face Mask Detector
 The goal is to develop an AI that can analyze facial images and detect whether a person is wearing a face mask or not, as well as what type of mask they are wearing.
 
@@ -25,8 +27,11 @@ This script goes through the directories within the dataset. Then, it builds a .
 # driver.py
 A script to test our CustomDataset class + pytorch's DataLoader() function.
 
+# cnnnew.py
+This is our main code that train our AI and generate the evaluation part (precision recall accuracy F1-measure and confusion matrice)
+
 # How to Install
-To run the main program cnnnew.py, you need the following libraries: pandas, PyTorch, scikit-image, and torchvision. 
+To run the main program cnnnew.py, you need the following libraries: pandas, PyTorch, scikit-image, torchvision, matplotlib and seaborn. 
 If you want to test resizeImages.py and buildDatasetCSV.py, you will need these libraries: python image library (Pillow), CSV.
 
 # How to Run
