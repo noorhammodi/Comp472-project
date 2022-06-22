@@ -51,8 +51,8 @@ def buildCSVs():
                     writer.writerow([file, index])
             f.close()
 
-randomizeImageNames()
-renameAllImgs()
+#randomizeImageNames()
+#renameAllImgs()
 buildCSVs()
 
 print("done")
