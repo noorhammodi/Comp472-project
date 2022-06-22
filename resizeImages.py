@@ -4,15 +4,19 @@ import os
 
 
 
-datasets = ["training", "testing"]
+datasets = ["training", "age/adult", "age/underage", "gender/male", "gender/female"]
 labels = ["no_mask", "cloth", "surgical", "n95"]
 
 #create directories
 for dataset in datasets:
+    if dataset != "training":
+        dataset = "testing/" + dataset
     for label in labels:
         filepath_resized = "dataset_resized/" + dataset + "/" + label
         if not os.path.exists(filepath_resized):
             os.makedirs(filepath_resized)
+
+#exit()
 
 #get average & median resolution
 avg_width = 0
@@ -24,6 +28,8 @@ widthList = []
 heightList = []
 
 for dataset in datasets:
+    if dataset != "training":
+        dataset = "testing/" + dataset
     for label in labels:
         fileList = os.listdir("dataset/" + dataset + "/" + label)
         for file in fileList:
@@ -55,6 +61,8 @@ print("img count:" + str(imgcount))
 print("resizing imgs...")
 #resize all images
 for dataset in datasets:
+    if dataset != "training":
+        dataset = "testing/" + dataset
     for label in labels:
         fileList = os.listdir("dataset/" + dataset + "/" + label)
         for file in fileList:
@@ -63,7 +71,8 @@ for dataset in datasets:
             filepath_resized = "dataset_resized/" + dataset + "/" + label + "/" + final_filename
             image = Image.open(filepath)
             #print(filepath_resized)
-            new_image = image.resize((int(avg_width/8), int(avg_height/8))).convert("RGB")
+            #new_image = image.resize((int(avg_width/2), int(avg_height/2))).convert("RGB")
+            new_image = image.resize((int(150), int(150))).convert("RGB")
             new_image.save(filepath_resized)
             #exit()
 
