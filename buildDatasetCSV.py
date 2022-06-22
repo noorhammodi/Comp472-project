@@ -37,9 +37,10 @@ def renameAllImgs():
 
 def buildCSVs():
     for dataset in datasets:
-        basePath = "dataset_resized/training/"
+        basePath = "training_dataset_resized/training/"
         csvFileName = "training.csv"
         if dataset != "training":
+            break
             basePath = "dataset_resized/testing/" + dataset + "/"
             csvFileName = "testing_" + dataset.replace("/", "-") + ".csv"
         with open(csvFileName, 'w', newline='') as f:

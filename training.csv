@@ -331,6 +331,7 @@
 [no_mask]_396.jpg,0
 [no_mask]_397.jpg,0
 [no_mask]_398.jpg,0
+[no_mask]_399.jpg,0
 [no_mask]_4.jpg,0
 [no_mask]_40.jpg,0
 [no_mask]_41.jpg,0
@@ -733,7 +734,6 @@
 [cloth]_399.jpg,1
 [cloth]_4.jpg,1
 [cloth]_40.jpg,1
-[cloth]_400.jpg,1
 [cloth]_41.jpg,1
 [cloth]_42.jpg,1
 [cloth]_43.jpg,1
@@ -903,7 +903,7 @@
 [surgical]_190.jpg,2
 [surgical]_191.jpg,2
 [surgical]_192.jpg,2
-[surgical]_193.Jpeg,2
+[surgical]_193.jpg,2
 [surgical]_194.jpg,2
 [surgical]_195.jpg,2
 [surgical]_196.jpg,2
@@ -1039,7 +1039,7 @@
 [surgical]_312.jpg,2
 [surgical]_313.jpg,2
 [surgical]_314.jpg,2
-[surgical]_315.jpg,2
+[surgical]_315.Jpeg,2
 [surgical]_316.jpg,2
 [surgical]_317.jpg,2
 [surgical]_318.jpg,2
@@ -1143,11 +1143,7 @@
 [surgical]_406.jpg,2
 [surgical]_407.jpg,2
 [surgical]_408.jpg,2
-[surgical]_409.jpg,2
 [surgical]_41.jpg,2
-[surgical]_410.jpg,2
-[surgical]_411.jpg,2
-[surgical]_412.jpg,2
 [surgical]_42.jpg,2
 [surgical]_43.jpg,2
 [surgical]_44.jpg,2

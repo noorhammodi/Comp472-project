@@ -20,7 +20,7 @@ def get_mean_and_std(dataloader):
 
     return mean, std
 
-train_set = MaskDataset(csv_file='training.csv', root_dir='dataset_resized\\training', transform=transforms.ToTensor())
+train_set = MaskDataset(csv_file='training.csv', root_dir='training_dataset_resized\\training', transform=transforms.ToTensor())
 train_loader = DataLoader(dataset=train_set, batch_size=64)
 
 data = next(iter(train_loader))
