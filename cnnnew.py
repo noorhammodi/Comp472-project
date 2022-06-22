@@ -19,17 +19,19 @@ import matplotlib.pyplot as plt
 # checking for device
 from customDataset import MaskDataset
 
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 print(device)
+
+
 
 # Transforms
 transformer = transforms.Compose([
     transforms.Resize((150, 150)),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),  # 0-255 to 0-1, numpy to tensors
-    transforms.Normalize([0.5, 0.5, 0.5],  # 0-1 to [-1,1] , formula (x-mean)/std
-                         [0.5, 0.5, 0.5])
+    transforms.Normalize((0.5328,), (0.3011,)) #mean=0.5328, std=0.3011 ||| # 0-1 to [-1,1] , formula (x-mean)/std
 ])
 
 # Dataloader
@@ -37,7 +39,8 @@ transformer = transforms.Compose([
 # Path for training and testing directory
 
 train_path = 'dataset_resized/training'
-test_path = 'dataset_resized/testing'
+test_path = 'dataset_resized/testing/age/adult'
+#test_path = 'dataset_resized/testing'
 
 train_loader = DataLoader(
     torchvision.datasets.ImageFolder(train_path, transform=transformer),
@@ -123,7 +126,7 @@ model = ConvNet(num_classes=6).to(device)
 optimizer = Adam(model.parameters(), lr=0.001, weight_decay=0.0001)
 loss_function = nn.CrossEntropyLoss()
 
-num_epochs = 40
+num_epochs = 5
 
 # calculating the size of training and testing images
 train_count = len(glob.glob(train_path + '/**/*.jpg'))
