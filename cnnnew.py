@@ -12,6 +12,7 @@ from torch.autograd import Variable
 import torchvision
 import pathlib
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import KFold
 import seaborn as sn
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -19,19 +20,16 @@ import matplotlib.pyplot as plt
 # checking for device
 from customDataset import MaskDataset
 
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 print(device)
-
-
 
 # Transforms
 transformer = transforms.Compose([
     transforms.Resize((150, 150)),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),  # 0-255 to 0-1, numpy to tensors
-    transforms.Normalize((0.5328,), (0.3011,)) #mean=0.5328, std=0.3011 ||| # 0-1 to [-1,1] , formula (x-mean)/std
+    transforms.Normalize([0.5672, 0.5267, 0.5091], [0.2998, 0.2969, 0.3034]) #mean=0.5328, std=0.3011 ||| # 0-1 to [-1,1] , formula (x-mean)/std
 ])
 
 # Dataloader
@@ -40,16 +38,19 @@ transformer = transforms.Compose([
 
 train_path = 'dataset_resized/training'
 test_path = 'dataset_resized/testing/age/adult'
-#test_path = 'dataset_resized/testing'
 
-train_loader = DataLoader(
-    torchvision.datasets.ImageFolder(train_path, transform=transformer),
-    batch_size=64, shuffle=True
-)
-test_loader = DataLoader(
-    torchvision.datasets.ImageFolder(test_path, transform=transformer),
-    batch_size=1, shuffle=True
-)
+
+train_loader = torchvision.datasets.ImageFolder(train_path, transform=transformer)
+test_loader = torchvision.datasets.ImageFolder(test_path, transform=transformer)
+folds = KFold(n_splits=10, shuffle=True)
+dataset_loader = torch.utils.data.ConcatDataset((train_loader,test_loader))
+
+for i_fold, (train_idx, valid_idx) in enumerate(folds.split(dataset_loader)):
+    dataset_train = torch.utils.data.Subset(dataset_loader,train_idx)
+    dataset_valid = torch.utils.data.Subset(dataset_loader, valid_idx)
+    train_loader = DataLoader(dataset_train,batch_size=64)
+    test_loader = DataLoader(dataset_valid,batch_size=1)
+
 
 # categories
 root = pathlib.Path(train_path)
