@@ -28,8 +28,7 @@ transformer = transforms.Compose([
     transforms.Resize((150, 150)),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),  # 0-255 to 0-1, numpy to tensors
-    transforms.Normalize([0.5, 0.5, 0.5],  # 0-1 to [-1,1] , formula (x-mean)/std
-                         [0.5, 0.5, 0.5])
+    transforms.Normalize((0.5328,), (0.3011,)) #mean=0.5328, std=0.3011 ||| # 0-1 to [-1,1] , formula (x-mean)/std
 ])
 
 # Dataloader
