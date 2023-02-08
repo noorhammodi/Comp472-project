@@ -2,7 +2,7 @@
 # Report
 The report can also be find on our shared google docs : https://docs.google.com/document/d/16JTKzBfRxTZjLQOXlL781Xp3SyU8lGIDOO8jrC1NxiA/edit#
 # AI Face Mask Detector
-The goal is to develop an AI that can analyze facial images and detect whether a person is wearing a face mask or not, as well as what type of mask they are wearing.
+The goal is to develop an AI that can analyze facial images and detect whether a person is wearing a face mask or not, as well as what type of mask they are wearing. We used Python.
 
 # Dataset
 This folder contains our picture dataset for testing and training. Inside these folders two folders, the pictures are sorted in the following categories: no_mask, cloth, surgical, n95.
